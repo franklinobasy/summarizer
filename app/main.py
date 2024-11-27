@@ -18,6 +18,6 @@ app.include_router(broader_public.router, prefix="/api/v1", tags=["Broader Publi
 app.include_router(decision_makers.router, prefix="/api/v1", tags=["Decision Makers"])
 
 # Health check endpoint
-@app.get("/", tags=["Health Check"])
+@app.get("/health", tags=["Health Check"])
 def health_check():
     return {"status": "ok", "message": "API is running!"}
