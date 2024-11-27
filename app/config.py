@@ -8,7 +8,7 @@ load_dotenv()
 
 # Retrieve API token and base model from environment variables
 API_TOKEN = os.getenv("API_TOKEN")
-BASE_MODEL = os.getenv("BASE_MODEL")
+BASE_MODEL = "llama-3-1-8b-instruct"
 
 # Ensure that the required variables are set
 if not API_TOKEN or not BASE_MODEL:
