@@ -1,7 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from app.models.request import TextInput
-from app.config import lorax_client
-from app.lorax_service import lorax_generate
+from app.lorax_service import lorax_generate, generate_text
 
 router = APIRouter()
 
@@ -46,7 +44,7 @@ async def summarize_for_academics(
 
         Reply:
         """
-        result = lorax_generate(lorax_client, prompt, adapter_id)
-        return {"summary": result.generated_text}
+        result = generate_text(prompt, adapter_id)
+        return {"summary": result}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error generating academic summary: {e}")
