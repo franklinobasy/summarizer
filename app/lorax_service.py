@@ -29,7 +29,7 @@ def generate_text(prompt, adapter_id, **kwargs):
     """
     if not kwargs:
         adapter_source = "pbase"
-        max_new_tokens = 1000
+        max_new_tokens = 2000
         temperature = 0.1
     
     else:
@@ -46,7 +46,9 @@ def generate_text(prompt, adapter_id, **kwargs):
         "inputs": prompt,
         "parameters": {
             "adapter_id": adapter_id,
-            "adapter_source": adapter_source
+            "adapter_source": adapter_source,
+            "max_new_tokens": max_new_tokens,
+            "temperature": temperature
         },
     }
 
