@@ -46,9 +46,7 @@ def generate_text(prompt, adapter_id, **kwargs):
         "inputs": prompt,
         "parameters": {
             "adapter_id": adapter_id,
-            "adapter_source": adapter_source,
-            "max_new_tokens": max_new_tokens,
-            "temperature": temperature,
+            "adapter_source": adapter_source
         },
     }
 
