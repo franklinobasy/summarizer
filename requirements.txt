@@ -2,3 +2,6 @@ fastapi
 uvicorn
 predibase
 python-dotenv
+python-multipart
+PyPDF2
+python-docx
