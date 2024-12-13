@@ -2,6 +2,7 @@ from typing import Optional
 from fastapi import APIRouter, Form, HTTPException, UploadFile
 from app.lorax_service import lorax_generate, generate_text
 from app.utilities.file_process import extract_text_from_docx, extract_text_from_pdf
+from app.prompts.donor_prompts import PROMPT_V1
 
 router = APIRouter()
 
@@ -41,24 +42,11 @@ async def summarize_for_donors(
         elif not article:
             raise HTTPException(status_code=400, detail="Either 'article' or 'file' must be provided.")
 
-        prompt = f"""
-        Request: Describe the impact and funding needs based on the outcomes of the following article for potential donors.
+        prompt = PROMPT_V1.format(article=article)
 
-        Article: {article}
-
-        Use this format in your response:
-        {{
-            'intent': 'Impact and Funding Needs',
-            'Background': '...',
-            'Research Question': '...',
-            'Global Alignment': '...',
-            'Findings': '...'
-        }}
-
-        Reply:
-        """
         result = generate_text(prompt, adapter_id)
         return {"summary": result}
+    
     except HTTPException as e:
         raise e
     except Exception as e:

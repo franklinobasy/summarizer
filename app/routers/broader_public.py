@@ -2,6 +2,7 @@ from typing import Optional
 from fastapi import APIRouter, Form, HTTPException, UploadFile
 from app.lorax_service import lorax_generate, generate_text
 from app.utilities.file_process import extract_text_from_docx, extract_text_from_pdf
+from app.prompts.broader_public_prompts import PROMPT_V1
 
 router = APIRouter()
 
@@ -33,31 +34,25 @@ async def simplify_for_public(
         if file:
             if file.content_type == "application/pdf":
                 article = extract_text_from_pdf(file)
-            elif file.content_type in ["application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"]:
+            elif file.content_type in [
+                "application/msword", 
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+            ]:
                 article = extract_text_from_docx(file)
             else:
-                raise HTTPException(status_code=400, detail="Unsupported file type. Upload a PDF or DOC/DOCX file.")
+                raise HTTPException(
+                    status_code=400, detail="Unsupported file type. Upload a PDF or DOC/DOCX file."
+                )
         elif not article:
-            raise HTTPException(status_code=400, detail="Either 'article' or 'file' must be provided.")
+            raise HTTPException(
+                status_code=400, detail="Either 'article' or 'file' must be provided."
+            )
 
-        prompt = f"""
-        Request: Explain the findings of the following article in simple terms for the general public.
+        prompt = PROMPT_V1.format(article=article)
 
-        Article: {article}
-
-        Use this format in your response:
-        {{
-            'intent': 'Simplified Explanation',
-            'Background': '...',
-            'Research Question': '...',
-            'Findings': '...',
-            'Note': '...'
-        }}
-
-        Reply:
-        """
         result = generate_text(prompt, adapter_id)
         return {"summary": result}
+    
     except HTTPException as e:
         raise e
     except Exception as e:
