@@ -6,7 +6,7 @@ app = FastAPI(
     title="LoRAX Summary API",
     description="An API to generate summaries and insights for different audiences using LoRAX.",
     version="1.0.0",
-    docs_url="/docs",  # Swagger UI documentation path
+    docs_url="/",  # Swagger UI documentation path
     redoc_url="/redoc",  # ReDoc UI documentation path
     openapi_url="/openapi.json"
 )
