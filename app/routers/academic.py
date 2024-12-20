@@ -33,20 +33,18 @@ async def summarize_for_academics(
     """
     try:
         if file:
-            if isinstance(file, UploadFile):
-                if file.content_type == "application/pdf":
-                    article = extract_text_from_pdf(file)
-                elif file.content_type in [
-                    "application/msword",
-                    "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
-                ]:
-                    article = extract_text_from_docx(file)
-                else:
-                    raise HTTPException(
-                        status_code=400, detail="Unsupported file type. Upload a PDF or DOC/DOCX file."
-                    )
+            if file.content_type == "application/pdf":
+                article = extract_text_from_pdf(file)
+            elif file.content_type in [
+                "application/msword",
+                "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+            ]:
+                article = extract_text_from_docx(file)
             else:
-                raise HTTPException(status_code=400, detail="Invalid file format. Expected an UploadFile.")
+                raise HTTPException(
+                    status_code=400, detail="Unsupported file type. Upload a PDF or DOC/DOCX file."
+                )
+            
             
         if not article:
             raise HTTPException(status_code=400, detail="Either 'article' text or a valid 'file' must be provided.")
